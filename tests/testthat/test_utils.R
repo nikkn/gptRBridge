@@ -23,7 +23,7 @@ test_that("render_markdown_simple converts newlines to <br/>", {
 test_that("render_markdown_simple wraps code blocks in <pre><code>", {
   out <- rms("```r\nx <- 1\n```")
   expect_true(grepl("<pre><code>", out, fixed = TRUE))
-  expect_true(grepl("x &lt;- 1", out, fixed = TRUE))  # < is escaped inside block
+  expect_true(grepl("x &lt;- 1", out, fixed = TRUE)) 
 })
 
 test_that("render_markdown_simple adds Insert button to code blocks", {

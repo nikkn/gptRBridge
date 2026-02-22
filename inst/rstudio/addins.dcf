@@ -1,4 +1,4 @@
-Name: GPT-R-Bridge
-Description: Open the AI chat assistant for R data analysis.
+Name: gptRBridge
+Description: Open the GPT chat assistant for R data analysis.
 Binding: launch_addin
 Interactive: true

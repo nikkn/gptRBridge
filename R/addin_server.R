@@ -2,17 +2,17 @@
 # Addin server – Shiny server logic & entry point
 # ---------------------------------------------------------------------------
 
-#' Build the Shiny server function for the gadget.
+
 #' @noRd
 build_server <- function() {
   function(input, output, session) {
 
     # -- reactive state -------------------------------------------------------
     rv <- shiny::reactiveValues(
-      token           = NULL,   # JWT token (NULL = not logged in)
-      chat_history    = list(), # list of list(role, content)
-      thinking        = FALSE,  # TRUE while waiting for AI response
-      trial_exhausted = FALSE   # TRUE after a 403 trial_exhausted response
+      token           = NULL,  
+      chat_history    = list(), 
+      thinking        = FALSE,  
+      trial_exhausted = FALSE   
     )
 
     # -- auth status (drives conditional panels) ------------------------------
@@ -30,7 +30,7 @@ build_server <- function() {
                                   duration = 3)
         }
       }
-    }) |> shiny::bindEvent(TRUE)  # run once on startup
+    }) |> shiny::bindEvent(TRUE)  
 
     # -- LOGIN ----------------------------------------------------------------
     shiny::observeEvent(input$btn_login, {
@@ -70,15 +70,10 @@ build_server <- function() {
     })
 
     # -- SEND MESSAGE ---------------------------------------------------------
-    # Instead of calling api_chat() from R (which blocks the Shiny event loop
-    # and freezes the UI), we hand the request to JavaScript via
-    # sendCustomMessage.  JS executes an async fetch() so the UI stays live
-    # and the thinking indicator is visible while waiting for the backend.
     shiny::observeEvent(input$btn_send, {
       msg <- trimws(input$user_msg)
       if (nchar(msg) == 0) return()
 
-      # Block if trial already exhausted
       if (isTRUE(rv$trial_exhausted)) {
         shiny::showNotification(
           "Your free trial has ended. Please subscribe to continue.",
@@ -87,14 +82,12 @@ build_server <- function() {
         return()
       }
 
-      # Block if a request is already in-flight
       if (isTRUE(rv$thinking)) return()
 
       rv$chat_history <- c(rv$chat_history, list(list(role = "user", content = msg)))
       shiny::updateTextAreaInput(session, "user_msg", value = "")
       rv$thinking <- TRUE
 
-      # JS fetch runs asynchronously; result comes back via input$chat_response
       session$sendCustomMessage("do_chat", list(
         token    = rv$token,
         messages = rv$chat_history,
