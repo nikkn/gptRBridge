@@ -1,0 +1,8 @@
+# R
+libs/
+_build/
+*.Rproj.user/
+*.Rhistory
+*.RData
+*.Ruserdata
+.Rbuildignore

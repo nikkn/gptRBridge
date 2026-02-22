@@ -1,0 +1,29 @@
+Package: gptRBridge
+Title: AI Assistant for RStudio Powered by GPT
+Version: 0.1.0
+Authors@R: person("Nikolai", "", role = c("aut", "cre"),
+    email = "your@email.com",
+    comment = c(ORCID = ""))
+Description: Provides a conversational AI interface inside RStudio for
+    interactive data analysis. Users can chat with a GPT language model,
+    receive generated R code with one-click insertion into the active editor,
+    and send console output or error messages back to the AI for iterative
+    refinement. All AI calls are routed through a remote backend; no API keys
+    are required on the user's machine.
+License: MIT + file LICENSE
+URL: https://github.com/your-username/GPT-R-Bridge
+BugReports: https://github.com/your-username/GPT-R-Bridge/issues
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports:
+    shiny,
+    miniUI,
+    httr,
+    jsonlite,
+    rstudioapi,
+    later,
+    utils
+Suggests:
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

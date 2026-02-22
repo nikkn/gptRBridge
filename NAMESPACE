@@ -1,0 +1,13 @@
+export(launch_addin)
+importFrom(shiny,reactive,reactiveValues,observeEvent,renderUI,tagList,tags,
+           HTML,isolate,stopApp,showNotification,observe,bindEvent,
+           shinyApp,runApp,span,
+           conditionalPanel,outputOptions,updateTextAreaInput,
+           actionButton,textInput,passwordInput,textAreaInput,
+           h4,div,uiOutput,invalidateLater)
+importFrom(miniUI,miniPage,miniContentPanel)
+importFrom(httr,POST,GET,add_headers,content_type_json,content,status_code)
+importFrom(jsonlite,toJSON,fromJSON)
+importFrom(rstudioapi,jobRunScript,viewer,isAvailable,insertText)
+importFrom(later,later)
+importFrom(utils,browseURL,capture.output)
