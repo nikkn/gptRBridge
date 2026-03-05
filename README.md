@@ -2,7 +2,9 @@
 
 **Plug-and-play GPT access for RStudio.**
 
-gptRBridge is the fastest way to get GPT inside RStudio. No API account, no setup, no configuration. Install, register, and start working in under 2 minutes.
+gptRBridge is the fastest way to get GPT inside RStudio. 
+No API account, no setup, no configuration. 
+Install, register, and start working in under 2 minutes.
 
 ---
 
