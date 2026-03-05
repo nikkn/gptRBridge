@@ -45,7 +45,7 @@ remotes::install_github("nikkn/gptRBridge", upgrade = "never")
 gptRBridge::launch_addin()
 ```
 
-Or via the RStudio menu: **Addins → Launch GPT-R-Bridge**
+Or via the RStudio menu: Addins → Launch GPT-R-Bridge
 
 **2. Create a free account**
 
@@ -72,7 +72,7 @@ Console output, results, and errors are captured and passed back to the assistan
 | **Trial** | 50 free calls, no charge |
 | **Subscription** | $9.99/month, cancel anytime |
 
-Your first 50 calls are completely free. After that, a flat subscription of **$9.99/month** gives you full access. One simple price, no usage surprises.
+Your first 50 calls are completely free. After that, a flat subscription of $9.99/month gives you full access. One simple price, no usage surprises.
 
 ---
 
