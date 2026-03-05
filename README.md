@@ -55,7 +55,7 @@ Ask anything about your data, models, or R code. The assistant responds with exp
 
 **4. Insert code**
 
-Click the **Insert** button on any code block to insert it directly into your active RStudio editor with one click.
+Click the 'Insert' button on any code block to insert it directly into your active RStudio editor with one click.
 
 **5. Iterate automatically**
 
