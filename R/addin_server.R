@@ -1,43 +1,31 @@
-# ---------------------------------------------------------------------------
-# Addin server – Shiny server logic & entry point
-# ---------------------------------------------------------------------------
-
-
-#' @noRd
 build_server <- function() {
   function(input, output, session) {
 
-    # -- reactive state -------------------------------------------------------
     rv <- shiny::reactiveValues(
-      token           = NULL,  
-      chat_history    = list(), 
-      thinking        = FALSE,  
-      trial_exhausted = FALSE   
+      token           = NULL,
+      chat_history    = list(),
+      thinking        = FALSE,
+      trial_exhausted = FALSE,
+      card_required   = FALSE
     )
 
-    # -- auth status (drives conditional panels) ------------------------------
     output$is_logged_in <- shiny::reactive({ !is.null(rv$token) })
     shiny::outputOptions(output, "is_logged_in", suspendWhenHidden = FALSE)
 
-    # -- AUTO-LOGIN from saved credentials ------------------------------------
     shiny::observe({
       creds <- load_credentials()
-      if (!is.null(creds)) {
-        result <- api_login(creds$email, creds$password)
-        if (result$ok) {
-          rv$token <- result$token
-          shiny::showNotification("Logged in automatically.", type = "message",
-                                  duration = 3)
-        }
+      if (!is.null(creds) && !is.null(creds$token)) {
+        rv$token <- creds$token
+        shiny::showNotification("Logged in automatically.", type = "message",
+                                duration = 3)
       }
-    }) |> shiny::bindEvent(TRUE)  
+    }) |> shiny::bindEvent(TRUE)
 
-    # -- LOGIN ----------------------------------------------------------------
     shiny::observeEvent(input$btn_login, {
       result <- api_login(input$email, input$password)
       if (result$ok) {
         rv$token <- result$token
-        save_credentials(input$email, input$password)
+        save_credentials(result$token)
         output$login_status <- shiny::renderUI(NULL)
       } else {
         output$login_status <- shiny::renderUI(
@@ -46,13 +34,27 @@ build_server <- function() {
       }
     })
 
-    # -- REGISTER -------------------------------------------------------------
     shiny::observeEvent(input$btn_register, {
       result <- api_register(input$email, input$password)
       if (result$ok) {
         output$login_status <- shiny::renderUI(
-          shiny::tags$div(style = "color:green;", result$message)
+          shiny::tagList(
+            shiny::tags$div(style = "color:green; font-size:13px;", result$message),
+            if (!is.null(result$setup_url))
+              shiny::tags$p(
+                style = "margin-top:10px;",
+                shiny::tags$a(
+                  href   = result$setup_url,
+                  target = "_blank",
+                  style  = "color:#3498db; font-weight:600; font-size:13px;",
+                  "Add your card to activate your trial"
+                )
+              )
+          )
         )
+        if (!is.null(result$setup_url)) {
+          try(utils::browseURL(result$setup_url), silent = TRUE)
+        }
       } else {
         output$login_status <- shiny::renderUI(
           shiny::tags$div(style = "color:red;", result$error)
@@ -60,7 +62,6 @@ build_server <- function() {
       }
     })
 
-    # -- LOGOUT ---------------------------------------------------------------
     shiny::observeEvent(input$btn_logout, {
       rv$token           <- NULL
       rv$chat_history    <- list()
@@ -69,7 +70,6 @@ build_server <- function() {
       clear_credentials()
     })
 
-    # -- SEND MESSAGE ---------------------------------------------------------
     shiny::observeEvent(input$btn_send, {
       msg <- trimws(input$user_msg)
       if (nchar(msg) == 0) return()
@@ -88,14 +88,18 @@ build_server <- function() {
       shiny::updateTextAreaInput(session, "user_msg", value = "")
       rv$thinking <- TRUE
 
+      history_window <- rv$chat_history
+      if (length(history_window) > 10) {
+        history_window <- tail(history_window, 10)
+      }
+
       session$sendCustomMessage("do_chat", list(
         token    = rv$token,
-        messages = rv$chat_history,
+        messages = history_window,
         base_url = get_base_url()
       ))
     })
 
-    # -- HANDLE AI RESPONSE (returned by JS fetch) ----------------------------
     shiny::observeEvent(input$chat_response, {
       resp <- input$chat_response
       rv$thinking <- FALSE
@@ -107,13 +111,14 @@ build_server <- function() {
         )
       } else if (identical(resp$detail, "trial_exhausted")) {
         rv$trial_exhausted <- TRUE
+      } else if (identical(resp$detail, "card_required")) {
+        rv$card_required <- TRUE
       } else {
         detail <- if (!is.null(resp$detail)) resp$detail else "Request failed"
         shiny::showNotification(detail, type = "error", duration = 5)
       }
     })
 
-    # -- SUBSCRIBE button (shown when trial exhausted) ------------------------
     shiny::observeEvent(input$btn_subscribe, {
       result <- api_checkout(rv$token)
       if (result$ok) {
@@ -123,7 +128,15 @@ build_server <- function() {
       }
     })
 
-    # -- POLL IPC_OUTPUT (auto-captured console output/errors) ----------------
+    shiny::observeEvent(input$btn_add_card, {
+      result <- api_setup_card(rv$token)
+      if (result$ok) {
+        utils::browseURL(result$setup_url)
+      } else {
+        shiny::showNotification(result$error, type = "error", duration = 5)
+      }
+    })
+
     shiny::observe({
       shiny::invalidateLater(500, session)
 
@@ -147,7 +160,6 @@ build_server <- function() {
       shiny::updateTextAreaInput(session, "user_msg", value = new_val)
     })
 
-    # -- INSERT CODE via inline button click ----------------------------------
     shiny::observeEvent(input$insert_code_click, {
       code <- input$insert_code_click
       ipc_file <- Sys.getenv("GPTRBRIDGE_IPC")
@@ -157,11 +169,11 @@ build_server <- function() {
       }
     })
 
-    # -- RENDER CHAT ----------------------------------------------------------
     output$chat_messages <- shiny::renderUI({
-      history   <- rv$chat_history
-      thinking  <- rv$thinking
-      exhausted <- rv$trial_exhausted
+      history       <- rv$chat_history
+      thinking      <- rv$thinking
+      exhausted     <- rv$trial_exhausted
+      card_required <- rv$card_required
 
       bubbles <- lapply(history, function(m) {
         css_class <- if (m$role == "user") "chat-bubble user" else "chat-bubble assistant"
@@ -169,7 +181,6 @@ build_server <- function() {
         shiny::tags$div(class = css_class, shiny::HTML(rendered))
       })
 
-      # Thinking indicator (animated dots while waiting for API)
       if (thinking) {
         bubbles <- c(bubbles, list(
           shiny::tags$div(
@@ -183,7 +194,21 @@ build_server <- function() {
         ))
       }
 
-      # Trial-exhausted banner
+      if (card_required) {
+        bubbles <- c(bubbles, list(
+          shiny::tags$div(
+            class = "trial-exhausted-banner",
+            shiny::tags$p(
+              "Card needed for fraud protection only \u2014 not billing.",
+              shiny::tags$br(),
+              "Add your card to unlock 50 free trial calls."
+            ),
+            shiny::actionButton("btn_add_card", "Add card \u2192",
+                                class = "btn-subscribe-inline")
+          )
+        ))
+      }
+
       if (exhausted) {
         bubbles <- c(bubbles, list(
           shiny::tags$div(
@@ -205,7 +230,6 @@ build_server <- function() {
       shiny::tagList(bubbles)
     })
 
-    # -- DONE (close gadget) --------------------------------------------------
     shiny::observeEvent(input$done, {
       shiny::stopApp()
     })
@@ -213,16 +237,23 @@ build_server <- function() {
 }
 
 
-# ---------------------------------------------------------------------------
-# Minimal markdown -> HTML helper (code blocks get an Insert button overlay)
-# ---------------------------------------------------------------------------
-#' @noRd
 render_markdown_simple <- function(text) {
+  math_ph      <- character(0)
+  math_content <- character(0)
+  math_matches <- regmatches(text, gregexpr("(?s)\\\\\\[.+?\\\\\\]", text, perl = TRUE))[[1]]
+  if (length(math_matches) > 0) {
+    for (i in seq_along(math_matches)) {
+      ph <- paste0("\x01MATHDISP", i, "\x01")
+      math_ph[i]      <- ph
+      math_content[i] <- math_matches[i]
+      text <- sub(math_matches[i], ph, text, fixed = TRUE)
+    }
+  }
+
   text <- gsub("&", "&amp;", text, fixed = TRUE)
   text <- gsub("<", "&lt;", text, fixed = TRUE)
   text <- gsub(">", "&gt;", text, fixed = TRUE)
 
-  # Extract code blocks, replace with placeholders to protect their newlines
   pattern <- "(?s)```[a-zA-Z]*\\s*\\n(.*?)\\n```"
   m <- gregexpr(pattern, text, perl = TRUE)
   blocks <- regmatches(text, m)[[1]]
@@ -237,13 +268,20 @@ render_markdown_simple <- function(text) {
     }
   }
 
-  # Inline code
   text <- gsub("`([^`]+)`", "<code>\\1</code>", text, perl = TRUE)
-
-  # Convert remaining newlines to <br/> (code blocks are protected by placeholders)
+  text <- gsub("\\*\\*(.+?)\\*\\*", "<strong>\\1</strong>", text, perl = TRUE)
+  text <- gsub("\\*(.+?)\\*", "<em>\\1</em>", text, perl = TRUE)
   text <- gsub("\n", "<br/>", text, fixed = TRUE)
 
-  # Re-insert code blocks (newlines preserved inside <pre>)
+  if (length(math_ph) > 0) {
+    for (i in seq_along(math_ph)) {
+      text <- sub(math_ph[i],
+                  paste0('<span style="display:block;text-align:center;margin:8px 0">',
+                         math_content[i], '</span>'),
+                  text, fixed = TRUE)
+    }
+  }
+
   if (length(blocks) > 0) {
     for (i in seq_along(blocks)) {
       code_content <- sub("(?s)^```[a-zA-Z]*\\s*\\n", "", blocks[i], perl = TRUE)
@@ -261,22 +299,12 @@ render_markdown_simple <- function(text) {
 }
 
 
-# ---------------------------------------------------------------------------
-# Internal: start the Shiny app on a given port (called from background job)
-# ---------------------------------------------------------------------------
-#' @noRd
 start_app <- function(port = 3838) {
   app <- shiny::shinyApp(ui = build_ui(), server = build_server())
   shiny::runApp(app, port = port, host = "127.0.0.1", launch.browser = FALSE)
 }
 
 
-# ---------------------------------------------------------------------------
-# Internal: poll IPC code file from the main R session.
-# Reads code written by Shiny and inserts it into the RStudio editor.
-# Stops automatically after stop_time (default 8 hours).
-# ---------------------------------------------------------------------------
-#' @noRd
 .poll_ipc <- function(ipc_code,
                       stop_time = Sys.time() + 8 * 3600,
                       interval  = 0.5) {
@@ -299,16 +327,7 @@ start_app <- function(port = 3838) {
 }
 
 
-# ---------------------------------------------------------------------------
-# Entry point – registered in addins.dcf
-# ---------------------------------------------------------------------------
-
-#' Launch the GPT-R-Bridge addin.
-#'
-#' Opens a conversational AI panel in the RStudio Viewer pane.  The Shiny app
-#' runs in a separate background job so the R console stays free.  Code
-#' returned by the AI can be inserted directly into the active editor with a
-#' single click.
+#' Launch the gptRBridge addin.
 #'
 #' @return Invisibly returns the port number the Shiny app is listening on.
 #' @export
@@ -318,7 +337,6 @@ start_app <- function(port = 3838) {
 #' }
 launch_addin <- function() {
   port       <- sample(10000:60000, 1)
-  # Normalise to forward slashes so paths are safe inside R string literals
   ipc_code   <- normalizePath(tempfile("gptRBridge_code_"),   winslash = "/", mustWork = FALSE)
   ipc_output <- normalizePath(tempfile("gptRBridge_output_"), winslash = "/", mustWork = FALSE)
 
@@ -357,7 +375,7 @@ launch_addin <- function() {
         }
       }
     }, error = function(e) NULL)
-    TRUE  # keep the callback active
+    TRUE
   }, name = "gptRBridge_capture")
 
   prev_error <- getOption("error")

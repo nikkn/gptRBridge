@@ -1,38 +1,38 @@
-# ---------------------------------------------------------------------------
-# Addin UI – miniUI gadget layout
-# ---------------------------------------------------------------------------
-
-#' @noRd
 build_ui <- function() {
   miniUI::miniPage(
     shiny::tags$head(
+      shiny::tags$link(
+        rel = "stylesheet",
+        href = "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+      ),
+      shiny::tags$script(
+        defer = NA,
+        src = "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
+      ),
+      shiny::tags$script(
+        defer = NA,
+        src = "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"
+      ),
       shiny::tags$style(shiny::HTML(ui_css())),
       shiny::tags$script(shiny::HTML(ui_js()))
     ),
 
-    # ---- Custom header bar ----
     shiny::div(
       class = "header-bar",
-      shiny::div(
-        class = "header-title",
-        "gpt-R-Bridge"
-      ),
+      shiny::div(class = "header-title", "gpt-R-Bridge"),
       shiny::div(
         class = "header-actions",
         shiny::conditionalPanel(
           condition = "output.is_logged_in",
-          shiny::actionButton("btn_logout", "Logout",
-                              class = "btn-header")
+          shiny::actionButton("btn_logout", "Logout", class = "btn-header")
         ),
         shiny::actionButton("done", "Close", class = "btn-header")
       )
     ),
 
-    # ---- Main content area ----
     shiny::div(
       class = "main-content",
 
-      # ---- Login panel ----
       shiny::conditionalPanel(
         condition = "!output.is_logged_in",
         shiny::div(
@@ -48,24 +48,24 @@ build_ui <- function() {
             shiny::actionButton("btn_register", "Register",
                                 class = "btn-default btn-register")
           ),
+          shiny::p(
+            class = "register-hook",
+            "Register now and get your 50 free trial calls."
+          ),
           shiny::uiOutput("login_status")
         )
       ),
 
-      # ---- Chat panel ----
       shiny::conditionalPanel(
         condition = "output.is_logged_in",
         shiny::div(
           class = "chat-container",
-          # Chat history (scrollable, top half)
           shiny::div(
             class = "chat-history",
             id = "chat_history_panel",
             shiny::uiOutput("chat_messages")
           ),
-          # Draggable splitter
           shiny::div(class = "splitter", id = "splitter"),
-          # Input area (bottom half)
           shiny::div(
             class = "chat-input-area",
             id = "chat_input_panel",
@@ -93,13 +93,8 @@ build_ui <- function() {
 }
 
 
-# ---------------------------------------------------------------------------
-# JavaScript – code insert buttons, auto-scroll, draggable splitter
-# ---------------------------------------------------------------------------
-#' @noRd
 ui_js <- function() {
   "
-  // ---- Async AI fetch (non-blocking – keeps the thinking indicator visible) ----
   Shiny.addCustomMessageHandler('do_chat', function(data) {
     fetch(data.base_url + '/ai/chat', {
       method: 'POST',
@@ -140,34 +135,52 @@ ui_js <- function() {
     });
   });
 
-  // Insert code button click
+  $(document).on('click', '#btn_register', function() {
+    $('#login_status').html(
+      '<div style=\"color:#888;font-style:italic;margin-top:10px\">' +
+      'Creating account' +
+      '<span class=\"thinking-dots\" style=\"margin-left:6px\">' +
+      '<span></span><span></span><span></span></span></div>'
+    );
+  });
+
   $(document).on('click', '.code-insert-btn', function(e) {
     e.stopPropagation();
     var code = $(this).closest('.code-block-wrap').find('pre code').text();
     Shiny.setInputValue('insert_code_click', code, {priority: 'event'});
   });
 
-  // Auto-scroll chat to bottom when new messages appear
   $(document).on('shiny:value', function(e) {
     if (e.name === 'chat_messages') {
       setTimeout(function() {
         var el = document.querySelector('.chat-history');
-        if (el) el.scrollTop = el.scrollHeight;
+        if (el) {
+          if (typeof renderMathInElement === 'function') {
+            renderMathInElement(el, {
+              delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '\\\\[', right: '\\\\]', display: true},
+                {left: '\\\\(', right: '\\\\)', display: false},
+                {left: '$', right: '$', display: false}
+              ],
+              throwOnError: false
+            });
+          }
+          el.scrollTop = el.scrollHeight;
+        }
       }, 50);
     }
   });
 
-  // Sync checkbox to Shiny input
   $(document).on('change', '#chk_auto_insert', function() {
     Shiny.setInputValue('chk_auto_insert', this.checked);
   });
-  // Set initial value once Shiny is ready
+
   $(document).on('shiny:connected', function() {
     var cb = document.getElementById('chk_auto_insert');
     if (cb) Shiny.setInputValue('chk_auto_insert', cb.checked);
   });
 
-  // Draggable splitter
   $(document).ready(function() {
     var splitter = document.getElementById('splitter');
     if (!splitter) return;
@@ -188,12 +201,9 @@ ui_js <- function() {
       if (!isDragging) return;
       var containerRect = container.getBoundingClientRect();
       var containerH = containerRect.height;
-      // Account for padding (10px top + 10px bottom) and splitter (6px) and btn-row (~40px)
       var offsetY = e.clientY - containerRect.top;
       var pct = (offsetY / containerH) * 100;
-      // Clamp between 15% and 85%
       pct = Math.max(15, Math.min(85, pct));
-
       topPanel.style.flex = '0 0 ' + pct + '%';
       bottomPanel.style.flex = '0 0 ' + (100 - pct - 1) + '%';
     });
@@ -210,17 +220,11 @@ ui_js <- function() {
 }
 
 
-# ---------------------------------------------------------------------------
-# CSS styles for the gadget
-# ---------------------------------------------------------------------------
-#' @noRd
 ui_css <- function() {
   "
-  /* ---- Reset & base ---- */
   body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
   .gadget-title { display: none !important; }
 
-  /* ---- Header bar ---- */
   .header-bar {
     display: flex;
     align-items: center;
@@ -259,7 +263,6 @@ ui_css <- function() {
     color: #fff;
   }
 
-  /* ---- Main content fills remaining space ---- */
   .main-content {
     position: absolute;
     top: 0;
@@ -270,13 +273,11 @@ ui_css <- function() {
     overflow: hidden;
   }
 
-  /* ---- Conditional panels must fill parent ---- */
   .main-content > .shiny-bound-output,
   .main-content > div[data-display-if] {
     height: 100%;
   }
 
-  /* ---- Login card ---- */
   .login-card {
     max-width: 320px;
     margin: 40px auto;
@@ -341,8 +342,14 @@ ui_css <- function() {
     margin-top: 12px;
     font-size: 13px;
   }
+  .register-hook {
+    font-size: 11px;
+    color: #7f8c8d;
+    margin-top: 10px;
+    margin-bottom: 0;
+    text-align: center;
+  }
 
-  /* ---- Chat container ---- */
   .chat-container {
     display: flex;
     flex-direction: column;
@@ -360,7 +367,6 @@ ui_css <- function() {
     min-height: 0;
   }
 
-  /* ---- Draggable splitter ---- */
   .splitter {
     flex: 0 0 6px;
     background: #e0e4e8;
@@ -389,7 +395,6 @@ ui_css <- function() {
     background: rgba(255,255,255,0.5);
   }
 
-  /* ---- Input area ---- */
   .chat-input-area {
     flex: 1 1 50%;
     display: flex;
@@ -433,7 +438,6 @@ ui_css <- function() {
     outline: none;
   }
 
-  /* ---- Send button row ---- */
   .btn-row {
     display: flex;
     gap: 10px;
@@ -456,7 +460,6 @@ ui_css <- function() {
     color: #fff;
   }
 
-  /* ---- Auto-insert checkbox ---- */
   .auto-insert-label {
     display: inline-flex;
     align-items: center;
@@ -471,7 +474,6 @@ ui_css <- function() {
     cursor: pointer;
   }
 
-  /* ---- Chat bubbles ---- */
   .chat-bubble {
     margin-bottom: 10px;
     padding: 10px 14px;
@@ -496,7 +498,6 @@ ui_css <- function() {
     border-bottom-left-radius: 3px;
   }
 
-  /* ---- Code blocks with Insert button ---- */
   .code-block-wrap {
     position: relative;
     margin: 8px 0;
@@ -540,7 +541,6 @@ ui_css <- function() {
     background: rgba(255,255,255,0.25);
   }
 
-  /* ---- Inline code (outside code blocks) ---- */
   .chat-bubble > code {
     background: #e8ecf1;
     color: #2c3e50;
@@ -550,7 +550,6 @@ ui_css <- function() {
     font-family: 'Fira Code', 'Consolas', monospace;
   }
 
-  /* ---- Thinking indicator (animated dots) ---- */
   .thinking-bubble {
     min-width: 56px;
     padding: 12px 16px;
@@ -574,7 +573,6 @@ ui_css <- function() {
     40%           { opacity: 1;   transform: scale(1);    }
   }
 
-  /* ---- Trial-exhausted banner ---- */
   .trial-exhausted-banner {
     background: #fffbf0;
     border-left: 4px solid #f0a500;

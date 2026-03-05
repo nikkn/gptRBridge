@@ -1,17 +1,4 @@
-# ---------------------------------------------------------------------------
-# Code utilities – extract and insert R code from AI responses
-# ---------------------------------------------------------------------------
-
-#' @noRd
-#' Extract all R code blocks from a markdown-formatted AI reply.
-#'
-#' Looks for fenced code blocks tagged as ```r or ```R.
-#' Falls back to un-tagged ``` blocks if no R-specific ones are found.
-#'
-#' @param text Character string (the AI reply).
-#' @return Character vector of code strings (one per block), or character(0).
 extract_r_code <- function(text) {
-  # Try ```r blocks first ((?s) lets . match newlines)
   pattern <- "(?s)```[rR]\\s*\\n(.*?)```"
   m <- gregexpr(pattern, text, perl = TRUE)
   blocks <- regmatches(text, m)[[1]]
@@ -20,7 +7,6 @@ extract_r_code <- function(text) {
     code <- sub("\\n?```$", "", code)
     return(code)
   }
-  # Fallback: any fenced block
   pattern_generic <- "(?s)```\\s*\\n(.*?)```"
   m2 <- gregexpr(pattern_generic, text, perl = TRUE)
   blocks2 <- regmatches(text, m2)[[1]]
