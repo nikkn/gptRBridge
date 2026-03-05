@@ -1,8 +1,8 @@
 # gptRBridge
 
-**Plug-and-play GPT access for RStudio. No OpenAI account needed.**
+**Plug-and-play GPT access for RStudio.**
 
-Unlike other AI tools for R that require you to set up your own API account, gptRBridge is ready to go out of the box. Install the package, register in under 2 minutes, and start working immediately. No API keys, no configuration, we handle everything.
+gptRBridge is the fastest way to get GPT inside RStudio. No API account, no setup, no configuration. Install, register, and start working in under 2 minutes.
 
 ---
 
@@ -10,7 +10,7 @@ Unlike other AI tools for R that require you to set up your own API account, gpt
 
 - Conversational AI chat panel inside RStudio
 - Generated R code with one-click insertion into the active editor
-- Send console output or error messages back for instant diagnosis
+- Send console output or error messages automatically back for instant diagnosis
 - Powered by GPT (cutting-edge language models)
 - Secure account system, your data stays yours
 
@@ -55,7 +55,11 @@ Ask anything about your data, models, or R code. The assistant responds with exp
 
 **4. Insert code**
 
-Click the **Insert** button on any code block to insert it directly into your active RStudio editor.
+Click the **Insert** button on any code block to insert it directly into your active RStudio editor with one click.
+
+**5. Iterate automatically**
+
+Console output, results, and errors are captured and passed back to the assistant automatically, so you can iterate without copy-pasting anything.
 
 ---
 
