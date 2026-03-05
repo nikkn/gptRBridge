@@ -1,8 +1,8 @@
 # gptRBridge
 
-**An AI-powered assistant for RStudio — chat with GPT, get R code, insert it directly into your editor.**
+**Plug-and-play GPT access for RStudio. No OpenAI account needed.**
 
-gptRBridge brings a conversational AI interface into RStudio. Ask questions about your data, get working R code suggestions, send error messages back for instant diagnosis, and insert code into your script with a single click.
+Unlike other AI tools for R that require you to set up your own API account, gptRBridge is ready to go out of the box. Install the package, register in under 2 minutes, and start working immediately. No API keys, no configuration, we handle everything.
 
 ---
 
@@ -10,9 +10,9 @@ gptRBridge brings a conversational AI interface into RStudio. Ask questions abou
 
 - Conversational AI chat panel inside RStudio
 - Generated R code with one-click insertion into the active editor
-- Send console output or error messages to the AI for iterative refinement
-- Powered by GPT (cutting-edge OpenAI models)
-- Secure account system — your data stays yours
+- Send console output or error messages back for instant diagnosis
+- Powered by GPT (cutting-edge language models)
+- Secure account system, your data stays yours
 
 ---
 
@@ -47,11 +47,11 @@ Or via the RStudio menu: **Addins → Launch GPT-R-Bridge**
 
 **2. Create a free account**
 
-On first launch, register with your email and password. You receive **50 free API calls** to explore the tool.
+Register with your email and password. You receive **50 free trial calls** at no cost. A credit card is required for identity verification only. Since we cover the cost of your trial, we need to ensure each account is legitimate. You will not be charged unless you explicitly subscribe after your trial ends.
 
 **3. Start chatting**
 
-Ask anything about your data, models, or R code. The AI responds with explanations and ready-to-run code blocks.
+Ask anything about your data, models, or R code. The assistant responds with explanations and ready-to-run code blocks.
 
 **4. Insert code**
 
@@ -59,9 +59,14 @@ Click the **Insert** button on any code block to insert it directly into your ac
 
 ---
 
-## Subscription
+## Pricing
 
-After your 50 free calls, a subscription is required to continue. Click **Subscribe now** in the addin or contact us at [contact.aquart@gmail.com](mailto:contact.aquart@gmail.com).
+| | |
+|---|---|
+| **Trial** | 50 free calls, no charge |
+| **Subscription** | $9.99/month, cancel anytime |
+
+Your first 50 calls are completely free. After that, a flat subscription of **$9.99/month** gives you full access. One simple price, no usage surprises.
 
 ---
 
