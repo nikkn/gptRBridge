@@ -14,9 +14,10 @@ not want to manage their own API account, billing, key rotation, or
 model versioning. If you prefer to use your own key, there are great
 options like `gptstudio` or `ellmer`.
 
-**Which model does gptRBridge use?** We currently use the latest GPT
+**Which model does gptRBridge use?** We currently use the latest GPT-5
 mini model, which delivers excellent results for coding and data
-analysis tasks at a cost that keeps the subscription affordable.
+analysis tasks at a cost that keeps the subscription affordable. We
+update the model regularly to keep up with new developments.
 
 **Is my code and data safe?** Your prompts are forwarded to the AI
 provider via our AWS Lambda backend. We do not store conversation

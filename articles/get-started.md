@@ -45,12 +45,13 @@ The chat panel opens in your RStudio Viewer pane.
 
 ## Step 2: Create a free account
 
-Click **Register** in the addin. You will need:
+In the login panel, enter your email and password, then click
+**Register**. You will need:
 
 - An email address
 - A password (minimum 8 characters)
-- A credit card (for fraud protection, **you are not charged** during
-  your free trial)
+- A credit card (for fraud protection, you are not charged during your
+  free trial)
 
 > **Why a credit card?** We pay for every API call on your behalf. The
 > card requirement prevents abuse, the same approach used by AWS and
@@ -98,8 +99,8 @@ Your first **50 calls are free**. No time limit, use them at your own
 pace.
 
 After that, a subscription is **\$9.99/month** for full access, subject
-to fair-use limits that only apply to extreme abuse scenarios. Normal
-users never hit them.
+to fair-use limits that only apply to abuse scenarios. Normal users
+never hit them.
 
 ------------------------------------------------------------------------
 
@@ -111,7 +112,7 @@ users never hit them.
 | **Calls**          | 50 (one-time) | Unlimited\*  |
 | **Setup required** | None          | None         |
 
-\*Fair-use limits apply only to extreme abuse scenarios.
+\*Fair-use limits apply only to abuse scenarios.
 
 ------------------------------------------------------------------------
 
