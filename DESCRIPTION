@@ -11,7 +11,7 @@ Description: Provides a conversational AI interface inside RStudio for
     refinement. All AI calls are routed through a remote backend; no API keys
     are required on the user's machine.
 License: MIT + file LICENSE
-URL: https://github.com/nikkn/gptRBridge
+URL: https://nikkn.github.io/gptRBridge/, https://github.com/nikkn/gptRBridge
 BugReports: https://github.com/nikkn/gptRBridge/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -25,5 +25,7 @@ Imports:
     later,
     utils
 Suggests:
-    testthat (>= 3.0.0)
-Config/testthat/edition: 3
+    knitr,
+    rmarkdown,
+    pkgdown
+VignetteBuilder: knitr

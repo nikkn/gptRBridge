@@ -1,0 +1,54 @@
+---
+title: "Frequently Asked Questions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Frequently Asked Questions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## General
+
+**Why do I need a credit card for the free trial?**
+We pay for every API call on your behalf. The card requirement prevents people from creating unlimited free accounts. You are not charged during the 50-call free trial. This is the same approach used by AWS, Google Cloud, and Azure for their free tiers.
+
+**Why not just let me use my own API key?**
+That is exactly what every other R/GPT package already does. gptRBridge exists for people who do not want to manage their own API account, billing, key rotation, or model versioning. If you prefer to use your own key, there are great options like `gptstudio` or `ellmer`.
+
+**Which model does gptRBridge use?**
+We currently use the latest GPT mini model, which delivers excellent results for coding and data analysis tasks at a cost that keeps the subscription affordable.
+
+**Is my code and data safe?**
+Your prompts are forwarded to the AI provider via our AWS Lambda backend. We do not store conversation history. Your data is subject to the AI provider's data usage policies, the same as any direct API usage.
+
+---
+
+## Pricing & Billing
+
+**What happens after my 50 free calls?**
+You will be prompted to subscribe for $9.99/month. Until you subscribe, the addin will show a "trial ended" message.
+
+**Can I cancel anytime?**
+Yes. Cancel from your account dashboard at any time with no cancellation fees.
+
+**Are there usage limits on the subscription?**
+There are soft fair-use limits to prevent abuse, but normal usage, even heavy daily use, will never hit them.
+
+---
+
+## Technical
+
+**Does gptRBridge work outside of RStudio?**
+The addin UI requires RStudio. The one-click insert and console capture features are RStudio-specific.
+
+**Does it work on RStudio Server / Posit Workbench?**
+Yes, as long as the server has outbound internet access.
+
+**Can I use it offline?**
+No. gptRBridge requires an internet connection to reach our backend.
+
+---
+
+## Still have questions?
+
+Open an issue on [GitHub](https://github.com/nikkn/gptRBridge/issues) or email us at [contact.aquart@gmail.com](mailto:contact.aquart@gmail.com).

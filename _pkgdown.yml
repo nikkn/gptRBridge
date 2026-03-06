@@ -1,0 +1,125 @@
+url: https://nikkn.github.io/gptRBridge/
+
+template:
+  bootstrap: 5
+  bootswatch: flatly
+  bslib:
+    primary: "#1a1a2e"
+    secondary: "#16213e"
+    success: "#0f7173"
+    info: "#4cc9f0"
+    base_font: {google: "IBM Plex Sans"}
+    heading_font: {google: "IBM Plex Sans"}
+    code_font: {google: "IBM Plex Mono"}
+  includes:
+    in_header: |
+      <style>
+        .navbar {
+          background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
+          border-bottom: 2px solid #4cc9f0;
+        }
+        .navbar-brand, .nav-link {
+          color: #f0f0f0 !important;
+        }
+        .navbar-brand:hover, .nav-link:hover {
+          color: #4cc9f0 !important;
+        }
+        .hero-banner {
+          background: linear-gradient(135deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%);
+          color: white;
+          padding: 4rem 2rem;
+          text-align: center;
+          border-bottom: 3px solid #4cc9f0;
+        }
+        .hero-banner h1 {
+          font-size: 3rem;
+          font-weight: 700;
+          letter-spacing: -0.02em;
+          color: #ffffff;
+        }
+        .hero-banner p {
+          font-size: 1.25rem;
+          color: #b0c4de;
+          max-width: 600px;
+          margin: 1rem auto;
+        }
+        .badge-row {
+          margin: 1.5rem 0;
+        }
+        .feature-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+          gap: 1.5rem;
+          margin: 2rem 0;
+        }
+        .feature-card {
+          background: #f8fafc;
+          border: 1px solid #e2e8f0;
+          border-left: 4px solid #4cc9f0;
+          border-radius: 8px;
+          padding: 1.5rem;
+        }
+        .feature-card h3 {
+          font-size: 1rem;
+          font-weight: 700;
+          color: #1a1a2e;
+          margin-bottom: 0.5rem;
+        }
+        pre code {
+          font-family: 'IBM Plex Mono', monospace !important;
+        }
+        footer {
+          border-top: 2px solid #e2e8f0;
+          background: #f8fafc;
+        }
+      </style>
+
+home:
+  title: "gptRBridge — Plug-and-play GPT for RStudio"
+  description: >
+    The fastest way to get GPT inside RStudio. No API account,
+    no setup, no configuration. Install, register, and start
+    working in under 2 minutes.
+
+  links:
+  - text: "GitHub"
+    href: https://github.com/nikkn/gptRBridge
+
+  sidebar:
+    structure: [links, license, community, citation, authors, dev]
+
+navbar:
+  structure:
+    left:  [intro, articles, reference]
+    right: [github]
+  components:
+    intro:
+      text: "Get Started"
+      href: articles/get-started.html
+    articles:
+      text: "Articles"
+      menu:
+      - text: "Get Started"
+        href: articles/get-started.html
+      - text: "FAQ"
+        href: articles/faq.html
+    github:
+      icon: fab fa-github
+      href: https://github.com/nikkn/gptRBridge
+      aria-label: GitHub
+
+articles:
+- title: "Using gptRBridge"
+  navbar: ~
+  contents:
+  - get-started
+  - faq
+
+footer:
+  structure:
+    left: developed_by
+    right: built_with
+
+authors:
+  footer:
+    roles: [aut, cre]
