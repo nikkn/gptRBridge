@@ -1,5 +1,7 @@
 # gptRBridge
 
+![](reference/figures/logo.png)
+
 **Plug-and-play GPT access for RStudio.**
 
 gptRBridge is the fastest way to get GPT inside RStudio. No API account,
