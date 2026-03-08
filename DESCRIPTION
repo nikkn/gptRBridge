@@ -14,6 +14,7 @@ License: MIT + file LICENSE
 URL: https://nikkn.github.io/gptRBridge/, https://github.com/nikkn/gptRBridge
 BugReports: https://github.com/nikkn/gptRBridge/issues
 Encoding: UTF-8
+Logo: man/figures/logo.png
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 Imports:
