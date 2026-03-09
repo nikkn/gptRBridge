@@ -179,6 +179,8 @@ ui_js <- function() {
   $(document).on('shiny:connected', function() {
     var cb = document.getElementById('chk_auto_insert');
     if (cb) Shiny.setInputValue('chk_auto_insert', cb.checked);
+    var ta = document.getElementById('user_msg');
+    if (ta) ta.setAttribute('spellcheck', 'false');
   });
 
   $(document).ready(function() {
