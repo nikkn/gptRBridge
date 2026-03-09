@@ -105,7 +105,7 @@ home:
 
 navbar:
   structure:
-    left:  [intro, articles, reference]
+    left:  [intro, articles]
     right: [github]
   components:
     intro:
