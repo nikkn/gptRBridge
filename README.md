@@ -35,8 +35,7 @@ Install, register, and start working in under 2 minutes.
 Run the following in R:
 
 ```r
-install.packages("remotes")
-remotes::install_github("nikkn/gptRBridge", upgrade = "never")
+install.packages("gptRBridge", repos = "https://nikkn.r-universe.dev")
 ```
 
 ---
