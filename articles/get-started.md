@@ -20,11 +20,10 @@ use it.
 
 ## Installation
 
-Install directly from GitHub:
+Install from R-universe:
 
 ``` r
-install.packages("remotes")
-remotes::install_github("nikkn/gptRBridge", upgrade = "never")
+install.packages("gptRBridge", repos = "https://nikkn.r-universe.dev")
 ```
 
 Then restart RStudio so the addin appears in your Addins menu.

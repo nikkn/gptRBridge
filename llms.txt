@@ -38,8 +38,7 @@ gptRBridge walkthrough
 Run the following in R:
 
 ``` r
-install.packages("remotes")
-remotes::install_github("nikkn/gptRBridge", upgrade = "never")
+install.packages("gptRBridge", repos = "https://nikkn.r-universe.dev")
 ```
 
 ------------------------------------------------------------------------
