@@ -118,6 +118,8 @@ navbar:
         href: articles/get-started.html
       - text: "FAQ"
         href: articles/faq.html
+      - text: "Introduction"
+        href: articles/gptRBridge-introduction.html
     github:
       icon: fab fa-github
       href: https://github.com/nikkn/gptRBridge
@@ -125,7 +127,6 @@ navbar:
 
 articles:
 - title: "Using gptRBridge"
-  navbar: ~
   contents:
   - get-started
   - faq
