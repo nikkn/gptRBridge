@@ -140,3 +140,6 @@ footer:
 authors:
   footer:
     roles: [aut, cre]
+
+news:
+  one_page: true
