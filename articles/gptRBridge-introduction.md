@@ -39,6 +39,10 @@ RStudio, the workflow changes too.
 `gptRBridge` embeds an AI chat panel directly inside your RStudio
 session. A few things make it different from opening a browser tab:
 
+**No context switching.** The AI panel lives inside RStudio alongside
+your code, console, and plots. You never leave your workspace,
+everything happens in one place.
+
 **One-click code insertion.** When the AI suggests code, a single click
 inserts it at your cursor position in the active editor. No selecting,
 no copying, no pasting.
@@ -60,6 +64,10 @@ it at a flat rate.
 The addin itself is a standard Shiny gadget that runs inside RStudio’s
 viewer pane, which means it behaves like any other RStudio panel:
 dockable, resizable, and always visible alongside your code.
+
+The result is that the conversation between you and the AI and the
+conversation between you and R happen in the same place, with the same
+context, without you manually transferring information between them.
 
  
 
