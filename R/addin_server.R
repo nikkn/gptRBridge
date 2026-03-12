@@ -147,7 +147,9 @@ build_server <- function() {
       text <- tryCatch({
         lines <- readLines(ipc_output, warn = FALSE)
         tryCatch(file.remove(ipc_output), error = function(e) NULL)
-        trimws(paste(lines, collapse = "\n"))
+        raw <- trimws(paste(lines, collapse = "\n"))
+        # Strip ANSI escape codes (terminal colors from RStudio)
+        gsub("\033\\[[0-9;]*m", "", raw)
       }, error = function(e) "")
       if (nchar(text) == 0) return()
 
@@ -269,6 +271,16 @@ render_markdown_simple <- function(text) {
   }
 
   text <- gsub("`([^`]+)`", "<code>\\1</code>", text, perl = TRUE)
+
+  # Protect significance legend lines (e.g. "Signif. codes:  0 '***' ...") from markdown
+  lines <- strsplit(text, "\n", fixed = TRUE)[[1]]
+  lines <- vapply(lines, function(l) {
+    if (grepl("Signif\\.\\s*codes:|'\\*+?'|&#39;\\*+?&#39;", l, perl = TRUE))
+      gsub("*", "&#42;", l, fixed = TRUE)
+    else l
+  }, character(1))
+  text <- paste(lines, collapse = "\n")
+
   text <- gsub("\\*\\*(.+?)\\*\\*", "<strong>\\1</strong>", text, perl = TRUE)
   text <- gsub("\\*(.+?)\\*", "<em>\\1</em>", text, perl = TRUE)
   text <- gsub("\n", "<br/>", text, fixed = TRUE)
@@ -378,9 +390,11 @@ launch_addin <- function() {
     TRUE
   }, name = "gptRBridge_capture")
 
+  strip_ansi <- function(x) gsub("\033\\[[0-9;]*m", "", x)
+
   prev_error <- getOption("error")
   options(error = function() {
-    err_msg <- geterrmessage()
+    err_msg <- strip_ansi(geterrmessage())
     if (nchar(trimws(err_msg)) > 0) {
       writeLines(paste0("[Error]\n", err_msg), ipc_output)
     }
