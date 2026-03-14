@@ -13,6 +13,7 @@ template:
     code_font: {google: "IBM Plex Mono"}
   includes:
     in_header: |
+      <meta name="google-site-verification" content="AMuyXyZixV_yJbMoVUShqFuyZB4kxgZxZLLErU_1Yw0" />
       <style>
         .navbar {
           background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%) !important;
