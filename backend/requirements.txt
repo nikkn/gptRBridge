@@ -1,0 +1,10 @@
+fastapi
+mangum
+pydantic[email]
+python-jose[cryptography]
+bcrypt
+boto3
+openai
+stripe
+python-dotenv
+python-multipart

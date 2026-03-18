@@ -34,9 +34,8 @@ api_register <- function(email, password) {
   if (httr::status_code(res) == 201) {
     body <- httr::content(res, as = "parsed")
     return(list(
-      ok        = TRUE,
-      message   = body$message,
-      setup_url = body$setup_url
+      ok      = TRUE,
+      message = body$message
     ))
   }
   msg <- tryCatch(
@@ -46,23 +45,6 @@ api_register <- function(email, password) {
   list(ok = FALSE, error = msg)
 }
 
-api_setup_card <- function(token) {
-  url <- paste0(get_base_url(), "/auth/setup-card")
-  res <- httr::POST(
-    url,
-    httr::content_type_json(),
-    httr::add_headers(Authorization = paste("Bearer", token))
-  )
-  if (httr::status_code(res) == 200) {
-    body <- httr::content(res, as = "parsed")
-    return(list(ok = TRUE, setup_url = body$setup_url))
-  }
-  msg <- tryCatch(
-    httr::content(res, as = "parsed")$detail,
-    error = function(e) "Could not create card setup session"
-  )
-  list(ok = FALSE, error = msg)
-}
 
 api_chat <- function(messages, token, system_prompt = NULL) {
   url <- paste0(get_base_url(), "/ai/chat")

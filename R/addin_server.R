@@ -2,11 +2,11 @@ build_server <- function() {
   function(input, output, session) {
 
     rv <- shiny::reactiveValues(
-      token           = NULL,
-      chat_history    = list(),
-      thinking        = FALSE,
-      trial_exhausted = FALSE,
-      card_required   = FALSE
+      token            = NULL,
+      chat_history     = list(),
+      thinking         = FALSE,
+      trial_exhausted  = FALSE,
+      email_unverified = FALSE
     )
 
     output$is_logged_in <- shiny::reactive({ !is.null(rv$token) })
@@ -37,28 +37,9 @@ build_server <- function() {
     shiny::observeEvent(input$btn_register, {
       result <- api_register(input$email, input$password)
       if (result$ok) {
-        output$login_status <- shiny::renderUI(
-          shiny::tagList(
-            shiny::tags$div(style = "color:green; font-size:13px;", result$message),
-            if (!is.null(result$setup_url))
-              shiny::tags$p(
-                style = "margin-top:10px;",
-                shiny::tags$a(
-                  href   = result$setup_url,
-                  target = "_blank",
-                  style  = "color:#3498db; font-weight:600; font-size:13px;",
-                  "Add your card to activate your trial"
-                )
-              )
-          )
-        )
-        if (!is.null(result$setup_url)) {
-          try(utils::browseURL(result$setup_url), silent = TRUE)
-        }
+        shiny::showNotification(result$message, type = "message", duration = 10)
       } else {
-        output$login_status <- shiny::renderUI(
-          shiny::tags$div(style = "color:red;", result$error)
-        )
+        shiny::showNotification(result$error, type = "error", duration = 7)
       }
     })
 
@@ -111,8 +92,8 @@ build_server <- function() {
         )
       } else if (identical(resp$detail, "trial_exhausted")) {
         rv$trial_exhausted <- TRUE
-      } else if (identical(resp$detail, "card_required")) {
-        rv$card_required <- TRUE
+      } else if (identical(resp$detail, "email_unverified")) {
+        rv$email_unverified <- TRUE
       } else {
         detail <- if (!is.null(resp$detail)) resp$detail else "Request failed"
         shiny::showNotification(detail, type = "error", duration = 5)
@@ -128,14 +109,6 @@ build_server <- function() {
       }
     })
 
-    shiny::observeEvent(input$btn_add_card, {
-      result <- api_setup_card(rv$token)
-      if (result$ok) {
-        utils::browseURL(result$setup_url)
-      } else {
-        shiny::showNotification(result$error, type = "error", duration = 5)
-      }
-    })
 
     shiny::observe({
       shiny::invalidateLater(500, session)
@@ -174,8 +147,8 @@ build_server <- function() {
     output$chat_messages <- shiny::renderUI({
       history       <- rv$chat_history
       thinking      <- rv$thinking
-      exhausted     <- rv$trial_exhausted
-      card_required <- rv$card_required
+      exhausted        <- rv$trial_exhausted
+      email_unverified <- rv$email_unverified
 
       bubbles <- lapply(history, function(m) {
         css_class <- if (m$role == "user") "chat-bubble user" else "chat-bubble assistant"
@@ -196,17 +169,15 @@ build_server <- function() {
         ))
       }
 
-      if (card_required) {
+      if (email_unverified) {
         bubbles <- c(bubbles, list(
           shiny::tags$div(
             class = "trial-exhausted-banner",
             shiny::tags$p(
-              "Card needed for fraud protection only \u2014 not billing.",
+              "Please verify your email to activate your 50 free trial calls.",
               shiny::tags$br(),
-              "Add your card to unlock 50 free trial calls."
-            ),
-            shiny::actionButton("btn_add_card", "Add card \u2192",
-                                class = "btn-subscribe-inline")
+              "Check your inbox and click the verification link."
+            )
           )
         ))
       }

@@ -138,9 +138,8 @@ ui_js <- function() {
   $(document).on('click', '#btn_register', function() {
     $('#login_status').html(
       '<div style=\"color:#888;font-style:italic;margin-top:10px\">' +
-      'Creating account' +
-      '<span class=\"thinking-dots\" style=\"margin-left:6px\">' +
-      '<span></span><span></span><span></span></span></div>'
+      'Creating account, please wait...' +
+      '</div>'
     );
   });
 
