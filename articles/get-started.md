@@ -49,16 +49,10 @@ In the login panel, enter your email and password, then click
 
 - An email address
 - A password (minimum 8 characters)
-- A credit card (for fraud protection, you are not charged during your
-  free trial)
 
-> **Why a credit card?** We pay for every API call on your behalf. The
-> card requirement prevents abuse, the same approach used by AWS and
-> Google Cloud free tiers. Your first 50 calls are completely free.
-
-After registering, a browser window will open for card verification.
-Once verified, your 50 free trial calls are activated and you can start
-chatting immediately.
+After registering, check your inbox for a verification email and click
+the link. Once verified, your 50 free trial calls are activated and you
+can start chatting immediately.
 
 ------------------------------------------------------------------------
 

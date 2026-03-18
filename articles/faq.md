@@ -2,11 +2,9 @@
 
 ## General
 
-**Why do I need a credit card for the free trial?** We pay for every API
-call on your behalf. The card requirement prevents people from creating
-unlimited free accounts. You are not charged during the 50-call free
-trial. This is the same approach used by AWS, Google Cloud, and Azure
-for their free tiers.
+**How do I activate my free trial?** After registering, you will receive
+a verification email. Click the link to verify your address and activate
+your 50 free trial calls. No credit card required.
 
 **Why not just let me use my own API key?** That is exactly what every
 other R/GPT package already does. gptRBridge exists for people who do
@@ -23,8 +21,9 @@ update the model regularly to keep up with new developments.
 Requests pass through a stateless backend to the AI API and nothing is
 logged or persisted. Chat history lives only in your local RStudio
 session and disappears when you close the addin. Credit card details are
-handled entirely by Stripe. We never see or store card numbers. The only
-data we store is your account status and usage count for billing.
+handled entirely by Stripe when you subscribe. We never see or store
+card numbers. The only data we store is your account status and usage
+count for billing.
 
 ------------------------------------------------------------------------
 

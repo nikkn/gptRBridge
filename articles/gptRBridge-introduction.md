@@ -95,10 +95,9 @@ Or find it under Addins → gptRBridge in the RStudio toolbar.
 Create a free account:
 
 Register with your email and password. You receive **50 free trial
-calls** at no cost. A credit card is required for identity verification
-only. Since I cover the AI costs on my end, I need to ensure each
-account is legitimate. At the end of the free trial, you can decide if
-you want to subscribe for \$9.99/month flat.
+calls** at no cost. No credit card required. Just verify your email and
+you are ready to go. At the end of the free trial, you can decide if you
+want to subscribe for \$9.99/month flat.
 
 🔗 <https://nikkn.github.io/gptRBridge/>
 
