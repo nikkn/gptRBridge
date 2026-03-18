@@ -109,7 +109,6 @@ build_server <- function() {
       }
     })
 
-
     shiny::observe({
       shiny::invalidateLater(500, session)
 
@@ -121,7 +120,6 @@ build_server <- function() {
         lines <- readLines(ipc_output, warn = FALSE)
         tryCatch(file.remove(ipc_output), error = function(e) NULL)
         raw <- trimws(paste(lines, collapse = "\n"))
-        # Strip ANSI escape codes (terminal colors from RStudio)
         gsub("\033\\[[0-9;]*m", "", raw)
       }, error = function(e) "")
       if (nchar(text) == 0) return()
@@ -243,7 +241,7 @@ render_markdown_simple <- function(text) {
 
   text <- gsub("`([^`]+)`", "<code>\\1</code>", text, perl = TRUE)
 
-  # Protect significance legend lines (e.g. "Signif. codes:  0 '***' ...") from markdown
+  # Protect significance legend lines from markdown bold/italic rendering
   lines <- strsplit(text, "\n", fixed = TRUE)[[1]]
   lines <- vapply(lines, function(l) {
     if (grepl("Signif\\.\\s*codes:|'\\*+?'|&#39;\\*+?&#39;", l, perl = TRUE))
