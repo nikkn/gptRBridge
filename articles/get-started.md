@@ -51,7 +51,7 @@ In the login panel, enter your email and password, then click
 - A password (minimum 8 characters)
 
 After registering, check your inbox for a verification email and click
-the link. Once verified, your 50 free trial calls are activated and you
+the link. Once verified, your 25 free trial calls are activated and you
 can start chatting immediately.
 
 ------------------------------------------------------------------------
@@ -88,10 +88,10 @@ follow-up question without leaving RStudio or touching your clipboard.
 
 ## Your free trial
 
-Your first **50 calls are free**. No time limit, use them at your own
+Your first **25 calls are free**. No time limit, use them at your own
 pace.
 
-After that, a subscription is **\$9.99/month** for full access, subject
+After that, a subscription is **\$4.99/month** for full access, subject
 to fair-use limits that only apply to abuse scenarios. Normal users
 never hit them.
 
@@ -101,8 +101,8 @@ never hit them.
 
 |                    | Free Trial    | Subscription |
 |--------------------|---------------|--------------|
-| **Cost**           | \$0           | \$9.99/month |
-| **Calls**          | 50 (one-time) | Unlimited\*  |
+| **Cost**           | \$0           | \$4.99/month |
+| **Calls**          | 25 (one-time) | Unlimited\*  |
 | **Setup required** | None          | None         |
 
 \*Fair-use limits apply only to abuse scenarios.

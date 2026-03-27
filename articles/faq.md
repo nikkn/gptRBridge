@@ -4,7 +4,7 @@
 
 **How do I activate my free trial?** After registering, you will receive
 a verification email. Click the link to verify your address and activate
-your 50 free trial calls. No credit card required.
+your 25 free trial calls. No credit card required.
 
 **Why not just let me use my own API key?** That is exactly what every
 other R/GPT package already does. gptRBridge exists for people who do
@@ -29,8 +29,8 @@ count for billing.
 
 ## Pricing & Billing
 
-**What happens after my 50 free calls?** You will be prompted to
-subscribe for \$9.99/month. Until you subscribe, the addin will show a
+**What happens after my 25 free calls?** You will be prompted to
+subscribe for \$4.99/month. Until you subscribe, the addin will show a
 “trial ended” message.
 
 **Can I cancel anytime?** Yes. Cancel from your account dashboard at any

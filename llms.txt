@@ -53,7 +53,7 @@ Or via the RStudio menu: Addins → Launch GPT-R-Bridge
 
 **2. Create a free account**
 
-Register with your email and password. You receive **50 free trial
+Register with your email and password. You receive **25 free trial
 calls** at no cost. A credit card is required for identity verification
 only. Since we cover the cost of your trial, we need to ensure each
 account is legitimate. You will not be charged unless you explicitly
@@ -81,11 +81,11 @@ anything.
 
 |                  |                              |
 |------------------|------------------------------|
-| **Trial**        | 50 free calls, no charge     |
-| **Subscription** | \$9.99/month, cancel anytime |
+| **Trial**        | 25 free calls, no charge     |
+| **Subscription** | \$4.99/month, cancel anytime |
 
-Your first 50 calls are completely free. After that, a flat subscription
-of \$9.99/month gives you full access. One simple price, no usage
+Your first 25 calls are completely free. After that, a flat subscription
+of \$4.99/month gives you full access. One simple price, no usage
 surprises.
 
 ------------------------------------------------------------------------
