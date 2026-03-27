@@ -109,6 +109,15 @@ build_server <- function() {
       }
     })
 
+    shiny::observeEvent(input$btn_manage_subscription, {
+      result <- api_billing_portal(rv$token)
+      if (result$ok) {
+        utils::browseURL(result$portal_url)
+      } else {
+        shiny::showNotification(result$error, type = "error", duration = 5)
+      }
+    })
+
     shiny::observe({
       shiny::invalidateLater(500, session)
 
@@ -172,7 +181,7 @@ build_server <- function() {
           shiny::tags$div(
             class = "trial-exhausted-banner",
             shiny::tags$p(
-              "Please verify your email to activate your 50 free trial calls.",
+              "Please verify your email to activate your 25 free trial calls.",
               shiny::tags$br(),
               "Check your inbox and click the verification link."
             )

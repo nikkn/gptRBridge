@@ -69,6 +69,24 @@ api_chat <- function(messages, token, system_prompt = NULL) {
   list(ok = FALSE, error = msg)
 }
 
+api_billing_portal <- function(token) {
+  url <- paste0(get_base_url(), "/ai/billing-portal")
+  res <- httr::POST(
+    url,
+    httr::content_type_json(),
+    httr::add_headers(Authorization = paste("Bearer", token))
+  )
+  if (httr::status_code(res) == 200) {
+    body <- httr::content(res, as = "parsed")
+    return(list(ok = TRUE, portal_url = body$portal_url))
+  }
+  msg <- tryCatch(
+    httr::content(res, as = "parsed")$detail,
+    error = function(e) "Could not open billing portal"
+  )
+  list(ok = FALSE, error = msg)
+}
+
 api_checkout <- function(token) {
   url <- paste0(get_base_url(), "/ai/checkout")
   res <- httr::POST(

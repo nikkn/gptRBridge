@@ -24,6 +24,7 @@ build_ui <- function() {
         class = "header-actions",
         shiny::conditionalPanel(
           condition = "output.is_logged_in",
+          shiny::actionButton("btn_manage_subscription", "Manage subscription", class = "btn-header"),
           shiny::actionButton("btn_logout", "Logout", class = "btn-header")
         ),
         shiny::actionButton("done", "Close", class = "btn-header")
@@ -50,7 +51,7 @@ build_ui <- function() {
           ),
           shiny::p(
             class = "register-hook",
-            "Register now and get your 50 free trial calls."
+            "Register now and get your 25 free trial calls."
           ),
           shiny::uiOutput("login_status")
         )
