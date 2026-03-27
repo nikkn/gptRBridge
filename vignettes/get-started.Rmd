@@ -61,7 +61,7 @@ In the login panel, enter your email and password, then click **Register**. You 
 - An email address
 - A password (minimum 8 characters)
 
-After registering, check your inbox for a verification email and click the link. Once verified, your 50 free trial calls are activated and you can start chatting immediately.
+After registering, check your inbox for a verification email and click the link. Once verified, your 25 free trial calls are activated and you can start chatting immediately.
 
 ---
 
@@ -97,9 +97,9 @@ Console output, results, and errors are captured automatically and passed back t
 
 ## Your free trial
 
-Your first **50 calls are free**. No time limit, use them at your own pace.
+Your first **25 calls are free**. No time limit, use them at your own pace.
 
-After that, a subscription is **$9.99/month** for full access, subject to fair-use limits that only apply to abuse scenarios. Normal users never hit them.
+After that, a subscription is **$4.99/month** for full access, subject to fair-use limits that only apply to abuse scenarios. Normal users never hit them.
 
 ---
 
@@ -107,8 +107,8 @@ After that, a subscription is **$9.99/month** for full access, subject to fair-u
 
 | | Free Trial | Subscription |
 |---|---|---|
-| **Cost** | $0 | $9.99/month |
-| **Calls** | 50 (one-time) | Unlimited* |
+| **Cost** | $0 | $4.99/month |
+| **Calls** | 25 (one-time) | Unlimited* |
 | **Setup required** | None | None |
 
 *Fair-use limits apply only to abuse scenarios.
