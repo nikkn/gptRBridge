@@ -72,7 +72,7 @@ Or find it under Addins → gptRBridge in the RStudio toolbar.
 
 Create a free account:
 
-Register with your email and password. You receive **25 free trial calls** at no cost. A credit card is required for identity verification only. At the end of the free trial, you can decide if you want to subscribe for $4.99/month flat.
+Register with your email and password. You receive **25 free trial calls** at no cost. No credit card required. At the end of the free trial, you can decide if you want to subscribe for $4.99/month flat.
 
 
 🔗 [https://nikkn.github.io/gptRBridge/](https://nikkn.github.io/gptRBridge/)
