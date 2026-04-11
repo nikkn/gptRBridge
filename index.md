@@ -54,10 +54,7 @@ Or via the RStudio menu: Addins → Launch GPT-R-Bridge
 **2. Create a free account**
 
 Register with your email and password. You receive **25 free trial
-calls** at no cost. A credit card is required for identity verification
-only. Since we cover the cost of your trial, we need to ensure each
-account is legitimate. You will not be charged unless you explicitly
-subscribe after your trial ends.
+calls** at no cost. No credit card required.
 
 **3. Start chatting**
 
